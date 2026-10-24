@@ -1,0 +1,20 @@
+C1337 (native Lean proof of C1 >= 1337/1000), build summary
+certificate: c1337 (n = 39, lambda = 1337/1000), 178 D-log tars, 5,033,964 job files, 89,673,710 leaves, 1 root
+U-fill: 2,412 tree-only jobs filled by checker/verify_tree_dump.py (2,446 tree-only records); list filled_replaced.sha256
+export: tools/export_shard_v2.py --pack --group-check --fast --group-leaves 1000 --main -> 124,631 group modules
+jobmap: every one of the 5,033,964 job files in exactly one group module (missing 0, extra 0, sha-differ 0, twice 0)
+forms: Forms.lean byte-identical to proposal/C1337_Forms.lean; the bound in Main.lean checked against proposal/C1337_bound_expected.lean
+build: 124,634 modules (124,631 group modules + Zo, Main, Forms) in 16,341.7 s wall, failed 0
+axioms: AXIOMS OK; each of Autocorr.C1337.autocorr_lower, autocorr_lower_ess, autocorr_lower_real depends on
+        propext, Classical.choice, Quot.sound and 124,632 native_decide axioms (one per group module, plus rootOK), nothing else
+module scan: tools/nscan_xf.lean over all 124,634 modules: 0 violations; tools/nscan_ext_xf.lean: the external references
+        depend only on [Quot.sound, Classical.choice, propext]
+manifest check: manifests 178, compared 5033964, equal 5033964, differ 0, missing 0, extra 0, duplicate ids 0
+server: one server, 360 hardware threads, 1.4 TiB memory
+CPU time: 2,589.5 CPU-hours (user + system, all processes) for export, jobmap, forms, build, axioms and results
+        (scripts/drive5.sh, 2026-10-24 02:39Z -> 11:03Z, 8 h 24 min wall). Earlier runs (2026-10-23 23:28Z ->
+        2026-10-24 01:57Z): fetch 3.4, scan 12.8 (with one failed U-fill start), U-fill plus an export attempt that ran out
+        of memory 639.6 CPU-hours. Helper steps (keeping and uploading the sources, manifest check): 8.3 CPU-hours.
+        All guarded steps together: 3,253.6 CPU-hours (as of 11:28Z on 2026-10-24; the source upload was still running).
+wall: fetch to results 11 h 34 min, including the failed export attempt and the restart; build stage 4.54 h
+olean hashes: c1337_oleans.sha256.gz (124,634 lines; a separate file of the record)

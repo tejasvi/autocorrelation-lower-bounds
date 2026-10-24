@@ -1,0 +1,8 @@
+OK AXIOMS OK: 3 theorems; std 3 native 124632 other 0; std 3 native 124632 other 0; std 3 native 124632 other 0; nscan_xf modules 124634 violations 0; axioms of the external references: [Quot.sound, Classical.choice, propext]
+OK built 124634 modules in 16341.7s; failed 0; watchdog kills 0
+OK 5033964 jobs, 124631 modules under /scratch/c36/lean_c133_prod/tools/../Autocorr/C1337; leaves 89673710; roots 1
+OK 5033964 job files, expected list 5033964 lines
+OK statements equal the reviewed proposal
+OK modules 124631 without manifest 0 jobs 5033964 expected 5033964 missing 0 extra 0 sha-differ 0 twice 0
+OK {"files": 5033964, "bytes": 1880311858658, "bad_gzip": 0, "ujobs": 2412, "urecords": 2446, "expected": 5033964, "missing": 0, "extra": 0, "differ": 0, "examples": {"missing": [], "extra": [], "differ": [], "bad_gzip": []}}
+OK 2412 jobs filled

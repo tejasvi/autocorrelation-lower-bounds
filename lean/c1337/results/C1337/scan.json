@@ -1,0 +1,17 @@
+{
+ "files": 5033964,
+ "bytes": 1880311858658,
+ "bad_gzip": 0,
+ "ujobs": 2412,
+ "urecords": 2446,
+ "expected": 5033964,
+ "missing": 0,
+ "extra": 0,
+ "differ": 0,
+ "examples": {
+  "missing": [],
+  "extra": [],
+  "differ": [],
+  "bad_gzip": []
+ }
+}

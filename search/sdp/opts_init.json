@@ -1,0 +1,1 @@
+{"tree_only": false, "d_compat": true, "stale_mc": true, "sdp": true, "sdp_direct": true, "sdp_gap": 0.008, "sdp_tol": 1e-5, "sdp_eig_rel": 1e-7, "sdp_dense_age": 3, "sdp_k": 12, "sdp_refine": false, "max_age": 20, "purge_every": 5, "sdp_setup_lp_cuts": true, "sdp_slack_tol": 0.001}

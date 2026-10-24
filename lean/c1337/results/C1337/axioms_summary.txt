@@ -1,0 +1,4 @@
+AXIOMS OK: 3 theorems; std 3 native 124632 other 0; std 3 native 124632 other 0; std 3 native 124632 other 0
+Autocorr.C1337.autocorr_lower axioms 124635 std 3 native 124632 (incl. rootOK) other []
+Autocorr.C1337.autocorr_lower_ess axioms 124635 std 3 native 124632 (incl. rootOK) other []
+Autocorr.C1337.autocorr_lower_real axioms 124635 std 3 native 124632 (incl. rootOK) other []

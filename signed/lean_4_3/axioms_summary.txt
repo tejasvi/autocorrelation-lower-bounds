@@ -1,0 +1,5 @@
+theorems ['C64NData.mainStatement', 'C64NData.mainStatementEss', 'C64NData.constStatement']
+C64NData.mainStatement: 207575 axioms = 3 standard + 207572 native_decide auxiliaries; missing 0, other 0, duplicates 0: OK
+C64NData.mainStatementEss: 207575 axioms = 3 standard + 207572 native_decide auxiliaries; missing 0, other 0, duplicates 0: OK
+C64NData.constStatement: 207575 axioms = 3 standard + 207572 native_decide auxiliaries; missing 0, other 0, duplicates 0: OK
+data modules in the index: 207571
