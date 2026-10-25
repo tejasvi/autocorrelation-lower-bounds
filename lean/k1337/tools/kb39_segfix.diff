@@ -1,0 +1,4 @@
+110a111,113
+>         if rec[0] in ("L", "D") and nrec > 0:   # SEGFIX: a leaf always starts a segment
+>             segs.append((nrec, KJ.pack(parts), dels, [KJ.pk_box(r) for r, _ in reversed(stack)]))
+>             parts, nrec, nl_seg, dels = [], 0, 0, []

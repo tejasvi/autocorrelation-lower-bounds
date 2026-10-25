@@ -65,13 +65,16 @@ from `LOCAL_SSD_GLOB`.
 
 ## Comparing a rebuild with the published hashes
 
-`c1337_oleans.sha256.gz` (a separate file of the record) lists the sha256 of every compiled C1337 module: 124,634 lines,
-sorted by path. Each line is `sha256  Autocorr/C1337/[<dir>/]<module>.olean`, with the path relative to
-`.lake/build/lib/lean`. To compare:
+Two separate files of the record list the sha256 of every C1337 module, 124,634 lines each, sorted by path:
+`c1337_oleans.sha256.gz` for the compiled modules (each line `sha256  Autocorr/C1337/[<dir>/]<module>.olean`, the path
+relative to `.lake/build/lib/lean`) and `c1337_sources.sha256.gz` for the exported sources (each line
+`sha256  C1337/[<dir>/]<module>.lean`, the path relative to the package's `Autocorr` directory). To compare:
 
     cd .lake/build/lib/lean
     zcat /path/to/c1337_oleans.sha256.gz | sha256sum -c --quiet                   # a complete build
     zcat /path/to/c1337_oleans.sha256.gz | sha256sum -c --quiet --ignore-missing  # a partial build
+    cd ../../../../Autocorr
+    zcat /path/to/c1337_sources.sha256.gz | sha256sum -c --quiet                  # the exported sources
 
-In the independent audit, the rebuilt modules reproduced their hashes except `Forms`, whose olean differed in bytes
-while its imports and constants were identical.
+In the independent audit, every listed module reproduced its hash except `Forms`: its imports, constant names and types
+were identical and its constants passed kernel replay.

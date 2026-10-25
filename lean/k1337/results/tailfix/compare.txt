@@ -1,0 +1,10 @@
+33ccef116f704093bb3acc7e4ee10745 r 36a143e92c2b7ea6ff06 l 48 segments 49 -> 74 modules 1 -> 2 SAME
+49ba5d56bc7f40369f38135d5b3a1c59 r 7eb512ac59ecec792785 l 48 segments 49 -> 72 modules 1 -> 2 SAME
+534479322c6b4ecf8af12dd85edde207 r bd05d27cfdbd7164cc37 l 47 segments 48 -> 70 modules 1 -> 2 SAME
+6ca62487fe7a406b85e9f2835ba04545 r 13a570474d2ceb937c2f l 12 segments 12 -> 18 modules 1 -> 1 SAME
+9caff3cb42c442959228cf76fed03dd9 r 98f9ac407b40776267d6 l 18 segments 18 -> 26 modules 1 -> 1 SAME
+b103f942f9d74e47a7e424a36eba5332 r 1f08580c68b642d355a6 l 248 segments 249 -> 369 modules 4 -> 6 SAME
+bedf3068183841cf8f243982de80dde7 r 8b774a1dc3917010d79c l 48 segments 49 -> 74 modules 1 -> 2 SAME
+e2ba295e22ee4971b8536064b552d310 r 32afd0acc934ae538ff3 l 43 segments 43 -> 69 modules 1 -> 2 SAME
+f6b8a0eec1d040068d668e36bd15ee73 r 9d4ceed400b68ad8dd36 l 49 segments 50 -> 77 modules 1 -> 2 SAME
+ALL SAME

@@ -1,0 +1,2 @@
+external references 133; missing 6 [AutocorrK2.KP, AutocorrK2.KP.mk, AutocorrK2.KPFacts, AutocorrK2.kpOK, AutocorrK2.segCheck, AutocorrK2.unpk]
+axioms of the external references: [Quot.sound, Classical.choice, propext]

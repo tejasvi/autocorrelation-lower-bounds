@@ -5,8 +5,8 @@ This directory contains Lean 4 proofs, built on Mathlib, of the following statem
     λ · (∫_{−1/4}^{1/4} f)²  ≤  sup_{|t| ≤ 1/2} ∫ f(t − x) f(x) dx      for every measurable f : ℝ → [0, ∞].
 
 The values are λ = 1337/1000, 267/200, 133/100, 33/25, 131/100, 13/10 and 32/25. The largest gives C₁ ≥ 1.337 for the
-first autocorrelation constant (Problem 6.2 of arXiv:2511.02864); its proof is the separate package `c1337/` in this
-directory, described in `c1337/README.md`. Each proof combines two parts:
+first autocorrelation constant (Problem 6.2 of arXiv:2511.02864); its proofs are the separate packages `c1337/`
+(`native_decide`) and `k1337/` (kernel only) in this directory, described in their READMEs. Each proof combines two parts:
 
 * a certificate-independent part: the reduction to a finite claim about bin masses, and the soundness of the
   checkers;
@@ -55,6 +55,7 @@ The certificate-independent lemmas are generic in n and λ:
 | package | λ | certificate | check | theorems | `#print axioms` |
 |---|---|---|---|---|---|
 | `C1337` | 1337/1000 | c1337 (n = 39) | `native_decide` | all three | the 3 standard axioms + 124,632 `native_decide` axioms |
+| `KC1337` | 1337/1000 | c1337 (n = 39) | kernel | all three | **propext, Classical.choice, Quot.sound** (see `k1337/README.md`) |
 | `C39T` | 267/200 | c39t (n = 39, the logs of the search, with the dual vectors written by `verify_tree_dump.py` for its tree-only leaves) | `native_decide` | all three | the 3 standard axioms + 13,678,677 `native_decide` axioms |
 | `C36T` | 133/100 | c36t (n = 36, tree-only, with the dual vectors written by `verify_tree_dump.py`) | `native_decide` | all three | the 3 standard axioms + 2,419,680 `native_decide` axioms |
 | `C30` | 33/25 | c30_132m (n = 30, format 2) | `native_decide` | all three | the 3 standard axioms + 290,309 `native_decide` axioms |

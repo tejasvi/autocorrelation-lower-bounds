@@ -1,0 +1,6 @@
+OK 252 G + Top + Sem + Main + Forms; Top 1681.02 507.78 597.94 2375456860; Sem 2069.22 606.76 1291.55 2350565548; Main 1061.80 528.75 520.72 2341096732; Forms 1036.77 519.07 504.98 2345540184
+OK 08:25:44 plan {"jobs": 5033964, "leaves": 89673710, "top_jobs": 343, "frontier": 3704, "g_modules": 252, "largest_g_jobs": 20000, "smax": 400000, "gmax": 20000, "K0": 0, "secs": 125}
+OK meta 2d1a008d467e0b0d (950 files) plan_dry_20261025T082059: 08:23:05 plan {"jobs": 5033964, "leaves": 89673710, "top_jobs": 343, "frontier": 3704, "g_modules": 252, "largest_g_jobs": 20000, "smax": 400000, "gmax": 20000, "K0": 0, "secs": 125}
+OK modules/constants 5164268 373604858, violations 0; axioms of the external references: [Quot.sound, Classical.choice, propext] (external refs checked with the v1 + v2 libraries)
+OK overlay 260 entries, 947 metas, 953 lists
+OK 3 hedge jobs merged; 950 metas

@@ -1,0 +1,5 @@
+'Autocorr.KC1337v2.jc_49ba5d56bc7f40369f38135d5b3a1c59_1' depends on axioms: [propext]
+Autocorr.KC1337v2.jc_49ba5d56bc7f40369f38135d5b3a1c59_1 : AutocorrK2.segCheck Autocorr.KC1337v2.P 1337 1000 9
+    Autocorr.KC1337v2.jd_49ba5d56bc7f40369f38135d5b3a1c59_1 [Autocorr.KC1337v2.jb_49ba5d56bc7f40369f38135d5b3a1c59]
+    Autocorr.KC1337v2.js_49ba5d56bc7f40369f38135d5b3a1c59_1 =
+  true

@@ -1,0 +1,7 @@
+'AutocorrK2.segK_to_v1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AutocorrK2.stackOKK_to_v1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AutocorrK2.segK_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AutocorrK2.kpFacts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AutocorrK2.stkK_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AutocorrK2.leafOK_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'AutocorrK2.denseFast_eq' depends on axioms: [propext, Classical.choice, Quot.sound]

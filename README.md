@@ -2,14 +2,14 @@
 
 Programs, checkers, certificates and Lean 4 formalization for the paper *Certified lower bounds for the first and the
 signed third autocorrelation constants* by Tejasvi Singh Tomar (Zenodo,
-[doi:10.5281/zenodo.23608921](https://doi.org/10.5281/zenodo.23608921)). The certificate of the bound for the first
+[doi:10.5281/zenodo.23642285](https://doi.org/10.5281/zenodo.23642285)). The certificate of the bound for the first
 autocorrelation constant consists of the logs of its search, 178 tar files of 1.88 TB in total, which the author keeps
 and provides on request; a public location will be added in a later version. The archive record
-[doi:10.5281/zenodo.23608922](https://doi.org/10.5281/zenodo.23608922) holds the programs and:
+[doi:10.5281/zenodo.23642286](https://doi.org/10.5281/zenodo.23642286) holds the programs and:
 
 - the index of that certificate (`meta.json` and, for each of the 178 tar files, the SHA-256 hashes of its job files),
   the hashes of the 2,412 job files that its Lean proof reads in filled form (the files are kept with the logs), the
-  list of all files that this proof reads, and the hashes of the compiled modules of this proof;
+  list of all files that this proof reads, and the hashes of the compiled modules of this proof and of their sources;
 - the certificate of the earlier bound `C₁ ≥ 1.335` (11.0 GB, compressed);
 - the nested certificate of the bound for the signed constants, in 2,048 parts collected in one tar file (25.2 GB);
 - certificates of the weaker bounds 25/19 (2.7 GB, compressed) and 30/23 (1.3 GB, compressed) for the signed
@@ -206,10 +206,15 @@ not mention the certificate, so the exporter need not be trusted. The Lean check
 makes Lean's compiler part of the trusted base: the theorem for 1337/1000 depends on the three standard axioms and on
 124,632 axioms that record compiled evaluations, one for each generated module, which checks a group of jobs, and
 one for the root region. The theorems for 267/200 and 133/100 have one such axiom per job and one for the root region,
-13,678,677 and 2,419,680 in all. The frozen dump verifier (sha256 34da7947...) filled the 2,412 job files that contain
-the 2,446 leaves without data, and the Lean proof reads these files and the other logs unchanged. The Lean inputs are
-thus the job files of the 178 parts, with these 2,412 replaced by their filled versions. The author keeps the filled
-versions with the logs, in `c1337_filled_jobs.tar`, and provides them on request; their hashes are in
+13,678,677 and 2,419,680 in all. An audit rebuilt all 124,634 modules of the proof for 1337/1000 with its own toolchain
+and compiled checker. It built them from our sources, which it checked against `c1337_sources.sha256.gz`. For a
+pre-registered sample of 2,493 group modules it also regenerated the sources from the certificate; they were
+byte-identical to ours. All rebuilt modules were byte-identical to ours except `Forms`, whose imports, constant names
+and types were identical and whose constants passed kernel replay. Its compiled checker evaluated every `native_decide`
+step again. The frozen dump verifier (sha256 34da7947...) filled the 2,412 job
+files that contain the 2,446 leaves without data, and the Lean proof reads these files and the other logs unchanged.
+The Lean inputs are thus the job files of the 178 parts, with these 2,412 replaced by their filled versions. The author
+keeps the filled versions with the logs, in `c1337_filled_jobs.tar`, and provides them on request; their hashes are in
 `c1337_filled_jobs.sha256` in the Zenodo record. Running `checker/verify_tree_dump.py` on these jobs with `VT_DUMP_DIR`
 set fills them again, but the new files carry new time stamps in their gzip headers, so their hashes differ from that
 list; any filled certificate that the Lean checker accepts gives the theorem. The list of all 5,033,964 input files
@@ -238,6 +243,20 @@ ours. It did not rebuild the final assembly module, which imports all the others
 Zenodo record holds `kc36_oleans.sha256.gz`, the SHA-256 hashes of all 2,274,566 compiled modules (the 2,274,565 that
 the audit rebuilt and the final one); `lean/kc36/README.md` explains the build and how to compare rebuilt modules with
 that list.
+
+A further version of this checker, extended to n = 39 and to square cuts in any number of blocks, in the package
+`lean/k1337/`, proves `V_39 ≥ 1337/1000`, and hence `C₁ ≥ 1.337`, by the Lean kernel alone. The checks of the segments
+of the depth-first records of all jobs fill 5,164,010 generated modules; 252 group modules and the final modules compose
+them, and `Main` imports all modules. Six jobs were cut into segments differently, by a patch of the exporter, which need
+not be trusted, and three jobs were checked by a second version of the checker and composed in `Sem`. Building the
+check modules took 186,605 CPU-hours, and the assembly about two hours on one server. An independent audit replayed the
+whole assembly in its own kernel (`Params`, the 252 group modules, `Top`, `Sem`, `Main` and `Forms`) and found the
+three final statements equal to the reviewed statements with λ = 1337/1000, depending only on `propext`,
+`Classical.choice` and `Quot.sound`. All 5,164,004 job oleans of the first version equal the published lists, and a 2%
+sample of the job units (103,602 modules), the five most CPU-heavy modules, the re-segmented ones and those of the second
+version were rebuilt independently, byte-identically; the other job modules rest on the kernel checks of our build. The
+Zenodo record holds `k1337_check_oleans.sha256.gz`, in two parts, with the SHA-256 hashes of all 5,164,010 check
+modules; `lean/k1337/README.md` explains the build and how to compare rebuilt modules with that list.
 
 ### Running the search
 
@@ -307,7 +326,7 @@ witness on a tile, as in level 2 with an extra term for each point.
 
 ### Checking the certificate
 
-The certificate is in the archive at [doi:10.5281/zenodo.23608922](https://doi.org/10.5281/zenodo.23608922) as
+The certificate is in the archive at [doi:10.5281/zenodo.23642286](https://doi.org/10.5281/zenodo.23642286) as
 `one_sided_tau1_4_parts.tar` (25,152,471,040 bytes). The tar holds 2,048 parts, `cert_t25_sub_000.json.gz` to
 `cert_t25_sub_2047.json.gz`, gzip-compressed JSON files in the format of `signed/nested/FORMAT_NESTED.md`, and their
 `SHA256SUMS`. Every part has the same header, and part N holds the arcs i of the certificate file with i mod 2048 = N.
@@ -376,7 +395,7 @@ child records whose kind is not `"iv"`, it refuses to run under python -O, and i
 
 ### Checking the certificate of the bound 25/19
 
-The certificate is in the archive at [doi:10.5281/zenodo.23608922](https://doi.org/10.5281/zenodo.23608922),
+The certificate is in the archive at [doi:10.5281/zenodo.23642286](https://doi.org/10.5281/zenodo.23642286),
 compressed with gzip: `one_sided_tau6_25.json.gz` (2,686,181,087 bytes; 10,644,925,969 bytes after decompression). Both
 checkers read the compressed file directly. In the directory containing the download:
 
@@ -503,6 +522,9 @@ Each of the five directories has a README with the statements, the build steps a
 
 ## Repository layout
 
+The files carry no exec bits. Run shell scripts with `bash` and Python programs with `python3 -I`, also where a README
+names a script directly: for example, `tools/example.sh 8` in `lean/README.md` means `bash tools/example.sh 8`.
+
 - `search/`: the branch-and-bound programs for C₁. `sdp/` holds the program that wrote the certificate of
   `V_39 ≥ 1337/1000` (`bnbtree39sdp.py`, with a semidefinite step; see `search/sdp/README.md`). `bnbtree.py` writes
   tree-only certificates (it wrote the certificate of `V_36`); `bnbtree39f.py` wrote the logs of the certificate of
@@ -518,7 +540,8 @@ Each of the five directories has a README with the statements, the build steps a
   (`idcheck_tree.py`).
 - `data/vn_points/`: the explicit mass vectors behind the upper bounds for `V_n` in the paper (exact rationals).
 - `lean/`: the Lean 4 + Mathlib formalization; see `lean/README.md`. `lean/c1337/` and `lean/kc36/` are separate
-  packages with the `native_decide` proof of `V_39 ≥ 1337/1000` and the kernel-only proof of `V_36 ≥ 133/100`.
+  packages with the `native_decide` proof of `V_39 ≥ 1337/1000` and the kernel-only proof of `V_36 ≥ 133/100`;
+  `lean/k1337/` holds the kernel-only proof of `V_39 ≥ 1337/1000`.
 - `signed/`: for the nested certificate of the bound 4/3, its two checkers, the programs that produced it and its format
   (`nested/`), and a Lean proof of the bound 4/3 (`lean_4_3/`); for certificates in the sense of Definition 6.6,
   the checkers (`checker/`), the search programs of the certificate of the bound 25/19 (`search/`) and the format
@@ -533,6 +556,12 @@ The archive record of this repository has one version for each version of the pa
 [doi:10.5281/zenodo.23480604](https://doi.org/10.5281/zenodo.23480604). The certificates of superseded signed bounds
 stay in the versions that added them.
 
+- Version 11 (doi:10.5281/zenodo.23642286) adds the kernel-only Lean proof of `C₁ ≥ 1.337` in `lean/k1337/`, with
+  `k1337_check_oleans.sha256.gz` in two parts. It also adds `c1337_sources.sha256.gz`, the hashes of the sources of the
+  124,634 modules of the `native_decide` proof in `lean/c1337/`, and states that an audit rebuilt all these modules
+  (Lean formalization above). It is the tag v11 of this repository,
+  https://github.com/tejasvi/autocorrelation-lower-bounds/tree/v11; the release PDF on Zenodo prints the commit. Its other
+  data files are those of version 10.
 - Version 10 (doi:10.5281/zenodo.23608922) raises the bound for C₁ from 1.335 to 1.337. Its certificate, the logs of the
   search for `V_39 ≥ 1337/1000` in 178 tar files, is available from the author on request, together with the 2,412 job
   files that the Lean proof reads in filled form; this record holds the index of the logs, the hashes of these filled

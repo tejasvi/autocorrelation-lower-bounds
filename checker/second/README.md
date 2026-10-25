@@ -119,7 +119,7 @@ verification.
 
     python3 -I test_core.py CERTDIR          # unit tests
     python3 -I mk_tamper.py CERTDIR OUTDIR    # 13 tampered variants
-    ./run_tamper.sh OUTDIR K                  # every variant must be reported as REJECTED
+    bash run_tamper.sh OUTDIR K               # every variant must be reported as REJECTED
 
 The 13 variants are:
 - a dropped leaf, a dropped last record and an extra record;

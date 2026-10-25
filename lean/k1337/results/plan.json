@@ -1,0 +1,12 @@
+{
+ "jobs": 5033964,
+ "leaves": 89673710,
+ "top_jobs": 343,
+ "frontier": 3704,
+ "g_modules": 252,
+ "largest_g_jobs": 20000,
+ "smax": 400000,
+ "gmax": 20000,
+ "K0": 0,
+ "secs": 125
+}
