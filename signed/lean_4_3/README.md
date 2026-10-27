@@ -12,8 +12,8 @@ byte and re-checked every module in Lean's kernel. A seeded sample of 20 data mo
 exported and accepted by `leanchecker`, nanoda and lean4lean. The complete export has not been checked by external
 kernels.
 
-There is no kernel-only proof of 4/3. The 25/19 and 30/23 bounds have kernel-only proofs, in `../lean_kernel_25_19` and
-`../lean_kernel`.
+A kernel-only proof of 4/3, from the same certificate, is in `../lean_kernel_4_3`. The 25/19 and 30/23 bounds have
+kernel-only proofs in `../lean_kernel_25_19` and `../lean_kernel`.
 
 ## Statements (`src/C64/Defs.lean`)
 
@@ -95,7 +95,8 @@ The complete export, built from about 16 GB of data source, has not been checked
   * `src/tools/gen_nest_data.py`, the exporter of the run: 5a1e93234d380bae1e9a0a1a5341203924d74517007025c550d9bd5606e5dcbd;
   * `src/tools/gen_main_nest_r2.py`, the assembly generator: 89fb645d973486407892f14310f3ad1e0cc7819e20c72afcf7452be7ce3b8e62.
 * `src/lakefile.toml` sets `Elab.async = false` (no parallel elaboration threads). Its comment about kernel-only proofs is
-  inherited from the shared project; the nested checker has no kernel-only proof.
+  inherited from the shared project and does not apply to this native proof; the kernel-only proof of 4/3 is in
+  `../lean_kernel_4_3`.
 * Three files, `src/C64/Check/SettleN.lean`, `SoundNMain.lean` and `SoundNW.lean`, differ from the audited sources only in
   comments, which cite the paper's numbering (Lemma 6.9, Lemma 6.10, Proposition 6.12).
 * `data_oleans_sha256.txt` gives the sha256 of the 207,571 compiled data modules (`C64NData/<m>.olean`).

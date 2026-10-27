@@ -2,16 +2,18 @@
 
 Programs, checkers, certificates and Lean 4 formalization for the paper *Certified lower bounds for the first and the
 signed third autocorrelation constants* by Tejasvi Singh Tomar (Zenodo,
-[doi:10.5281/zenodo.23642285](https://doi.org/10.5281/zenodo.23642285)). The certificate of the bound for the first
+[doi:10.5281/zenodo.23645396](https://doi.org/10.5281/zenodo.23645396)). The certificate of the bound for the first
 autocorrelation constant consists of the logs of its search, 178 tar files of 1.88 TB in total, which the author keeps
 and provides on request; a public location will be added in a later version. The archive record
-[doi:10.5281/zenodo.23642286](https://doi.org/10.5281/zenodo.23642286) holds the programs and:
+[doi:10.5281/zenodo.23645397](https://doi.org/10.5281/zenodo.23645397) holds the programs and:
 
 - the index of that certificate (`meta.json` and, for each of the 178 tar files, the SHA-256 hashes of its job files),
   the hashes of the 2,412 job files that its Lean proof reads in filled form (the files are kept with the logs), the
   list of all files that this proof reads, and the hashes of the compiled modules of this proof and of their sources;
 - the certificate of the earlier bound `C₁ ≥ 1.335` (11.0 GB, compressed);
 - the nested certificate of the bound for the signed constants, in 2,048 parts collected in one tar file (25.2 GB);
+- for the kernel-only Lean proof of that bound, the hashes of its compiled modules and of their sources, and the hint
+  files that, with the nested certificate, regenerate these sources (765 MB, compressed);
 - certificates of the weaker bounds 25/19 (2.7 GB, compressed) and 30/23 (1.3 GB, compressed) for the signed
   constants, which the Lean proofs of these bounds read;
 - the certificate of the smaller bound `C₁ ≥ 1.33` (4.8 GB).
@@ -467,7 +469,8 @@ reproduced every compiled file byte for byte and re-checked every module in Lean
 modules and the assembly module of one arc, exported, was accepted by `leanchecker`, nanoda and lean4lean; no other
 kernel implementation has checked the complete export. The 207,571 data modules took about 8,700 CPU-hours to build
 (2.25 hours on 19 servers with 384 threads each) and the 1,231 assembly modules about 450 (4 hours on one server);
-`Main.lean` needs about 100 GB of memory.
+`Main.lean` needs about 100 GB of memory. `signed/lean_kernel_4_3/`, described below, proves the same theorems by Lean's
+kernel alone.
 
 The weaker bound C₃ ≥ C₃′ ≥ 25/19 is verified in Lean 4 with Mathlib in `signed/lean_25_19/`, from
 `one_sided_tau6_25.json.gz`. The sources formalize the argument of Section 6 of the paper with winding numbers, without
@@ -518,7 +521,27 @@ equality lemmas, the check of the global data and one interval of type E (`A1193
 type H (`A0000`), with its piece modules and its assembly. The complete export, about 5.7 million constants, was not
 checked by a second kernel.
 
-Each of the five directories has a README with the statements, the build steps and the expected hashes.
+`signed/lean_kernel_4_3/` proves the three theorems of `signed/lean_4_3/`, under the same names, by Lean's kernel alone;
+they depend only on the three standard axioms. It extends the port of the checker in `signed/lean_kernel_25_19/` to
+nested certificates. Each of the 207,571 data modules of `signed/lean_4_3/` has a counterpart here with the same tree of
+nodes (the largest are split over several files), which proves the check of the port by `decide +kernel`; the assembly,
+otherwise that of `signed/lean_4_3/`, derives the original checks from these with the lemmas `C64KChk.checkSubN_of_K`,
+`C64KChk.checkArcN_of_K` and `C64KChk.checkGlobN_of_K`. A data module splits its check into theorems for node parts, for
+small subtrees and for runs of consecutive tile arcs of a witness, and one theorem shows that these cover its tree. Some
+of these theorems take hints as literals, which say in advance where the checker subdivides; a wrong hint can only make
+a check fail. Building the 212,820 modules took about 313,000 CPU-hours (47 hours on up to 89 servers with 176 threads
+each, and 18 server-hours for the assembly, most of them during the build). An audit confirmed the statements and the
+axioms. It rebuilt the 54 library modules and all 1,232 assembly modules byte for byte and replayed them in Lean's
+kernel, and for each of the 211,588 data files it checked the published hash and the absence of declared axioms and
+native names, and for each of the 207,571 data modules that its tree of nodes equals that of the audited native proof.
+The data proofs were checked again by Lean's kernel only in samples (12 parts rebuilt byte for byte, 184 sampled files
+replayed, the 102 files that were compiled again after reaching a time limit and the 102 modules built on them, and 30
+randomly chosen of the 426 files whose first builds left no logs); the other data files rest on the kernel checks of our
+build. `leanchecker` and nanoda accepted the exports of five sampled data modules and lean4lean those of three of them;
+all three accepted the export of one arc's assembly module with every declaration it depends on and rejected a corrupted
+export, but none has checked the complete export.
+
+Each of the six directories has a README with the statements, the build steps and the expected hashes.
 
 ## Repository layout
 
@@ -543,11 +566,11 @@ names a script directly: for example, `tools/example.sh 8` in `lean/README.md` m
   packages with the `native_decide` proof of `V_39 ≥ 1337/1000` and the kernel-only proof of `V_36 ≥ 133/100`;
   `lean/k1337/` holds the kernel-only proof of `V_39 ≥ 1337/1000`.
 - `signed/`: for the nested certificate of the bound 4/3, its two checkers, the programs that produced it and its format
-  (`nested/`), and a Lean proof of the bound 4/3 (`lean_4_3/`); for certificates in the sense of Definition 6.6,
-  the checkers (`checker/`), the search programs of the certificate of the bound 25/19 (`search/`) and the format
-  specification (`FORMAT.md`); two Lean proofs of the weaker bound 25/19 (`lean_25_19/`, and `lean_kernel_25_19/` for
-  the kernel-only one) and two of the weaker bound 30/23 (`lean/` and `lean_kernel/`). The certificates are in the
-  archive.
+  (`nested/`), and two Lean proofs of the bound 4/3 (`lean_4_3/`, and `lean_kernel_4_3/` for the kernel-only one); for
+  certificates in the sense of Definition 6.6, the checkers (`checker/`), the search programs of the certificate of the
+  bound 25/19 (`search/`) and the format specification (`FORMAT.md`); two Lean proofs of the weaker bound 25/19
+  (`lean_25_19/`, and `lean_kernel_25_19/` for the kernel-only one) and two of the weaker bound 30/23 (`lean/` and
+  `lean_kernel/`). The certificates are in the archive.
 - `paper/`: LaTeX source of the paper.
 
 ## Versions
@@ -556,6 +579,12 @@ The archive record of this repository has one version for each version of the pa
 [doi:10.5281/zenodo.23480604](https://doi.org/10.5281/zenodo.23480604). The certificates of superseded signed bounds
 stay in the versions that added them.
 
+- Version 12 (doi:10.5281/zenodo.23645397) adds the kernel-only Lean proof of the signed bound 4/3 in
+  `signed/lean_kernel_4_3/`, with `k43_oleans.sha256.gz`, `k43_sources.sha256.gz` and
+  `one_sided_tau1_4_kernel_hints.tar.xz`: the hashes of its compiled modules and of their sources, and the hint files
+  that regenerate these sources from the certificate. `signed/lean_4_3/README.md` now points to it. It is the tag v12 of
+  this repository, https://github.com/tejasvi/autocorrelation-lower-bounds/tree/v12; the release PDF on Zenodo prints
+  the commit. Its other data files are those of version 11.
 - Version 11 (doi:10.5281/zenodo.23642286) adds the kernel-only Lean proof of `C₁ ≥ 1.337` in `lean/k1337/`, with
   `k1337_check_oleans.sha256.gz` in two parts. It also adds `c1337_sources.sha256.gz`, the hashes of the sources of the
   124,634 modules of the `native_decide` proof in `lean/c1337/`, and states that an audit rebuilt all these modules

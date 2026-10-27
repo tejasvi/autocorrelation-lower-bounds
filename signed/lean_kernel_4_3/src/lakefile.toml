@@ -1,0 +1,39 @@
+name = "LeanC64K"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["C64K"]
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+autoImplicit = false
+weak.linter.style.header = false
+# no parallel elaboration threads (address-space limit on the build machine)
+Elab.async = false
+
+# Toolchain leanprover/lean4:v4.35.0-rc3; Mathlib at tag v4.35.0-rc3 (commit c55e6e786f49, see lake-manifest.json).
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.35.0-rc3"
+
+# The soundness proofs of the nested checker (copied unchanged from the reviewed N snapshot).
+[[lean_lib]]
+name = "C64"
+
+# The checker (core Lean only), the same sources as the N proof (Check, Ival, Num, Nest, Load).
+# No precompileModules here: the kernel-only proofs do not run compiled code.
+[[lean_lib]]
+name = "C64Core"
+
+# The kernel port of the checker (core Lean: KBall, KNum, KChk, KNest) and its simulation lemmas (Mathlib:
+# KBallSim, KNumSim, KChkSim, KChkSim2 from the 25/19 proof, unchanged; KNestSim for the nested checker).
+[[lean_lib]]
+name = "C64K"
+roots = ["C64K.KBall", "C64K.KNum", "C64K.KChk", "C64K.KPieceGood", "C64K.KNest", "C64K.KParts", "C64K.KSeg", "C64K.KCover", "C64K.KHint2", "C64K.KHintGlue", "C64K.KCoverL", "C64K.KDec", "C64K.KBallSim", "C64K.KNumSim",
+  "C64K.KChkSim", "C64K.KChkSim2", "C64K.KPieceSome", "C64K.KNestSim"]
+
+# Tools of the K run that are not part of any proof (core Lean): the hint pass of the generator.
+[[lean_lib]]
+name = "C64KX"
+roots = ["C64KX.HintGen"]

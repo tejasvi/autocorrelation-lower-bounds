@@ -1,0 +1,6 @@
+# Files of this directory that differ from the versions that were compiled, in comments and docstrings only (every line count kept).
+# path	sha256 as compiled	sha256 in this copy	edit
+src/C64/Check/SettleN.lean	848097eb339e986926724ef1c8c2d37aa8f1915a1e8d8f890dde98c93630dc41	5d7f9e6f7dc61194f3614f978d7c31ec0d964f7c3bed3d63aa6276873d983cfd	one module-docstring line (byte length kept)
+# Compiled file that differs from that of the build: the module docstring is stored in it. Its declarations are equal (Expr.equal), its .ilean is unchanged, and the module that imports it compiles to the same file.
+# path	sha256 of the build	sha256 from this copy	difference
+C64/Check/SettleN.olean	220835722e2784bbadc4e9e10fe8af895372c06df8288b89a8f0d923249fa3aa	287ca5439590b020ea05e991977a6f0931b926914bfcd842bff774724fb2500f	the docstring bytes only (55 of 934,368 bytes)
