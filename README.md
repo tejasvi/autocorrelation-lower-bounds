@@ -2,10 +2,10 @@
 
 Programs, checkers, certificates and Lean 4 formalization for the paper *Certified lower bounds for the first and the
 signed third autocorrelation constants* by Tejasvi Singh Tomar (Zenodo,
-[doi:10.5281/zenodo.23645396](https://doi.org/10.5281/zenodo.23645396)). The certificate of the bound for the first
+[doi:10.5281/zenodo.23715655](https://doi.org/10.5281/zenodo.23715655)). The certificate of the bound for the first
 autocorrelation constant consists of the logs of its search, 178 tar files of 1.88 TB in total, which the author keeps
 and provides on request; a public location will be added in a later version. The archive record
-[doi:10.5281/zenodo.23645397](https://doi.org/10.5281/zenodo.23645397) holds the programs and:
+[doi:10.5281/zenodo.23715661](https://doi.org/10.5281/zenodo.23715661) holds the programs and:
 
 - the index of that certificate (`meta.json` and, for each of the 178 tar files, the SHA-256 hashes of its job files),
   the hashes of the 2,412 job files that its Lean proof reads in filled form (the files are kept with the logs), the
@@ -556,8 +556,9 @@ names a script directly: for example, `tools/example.sh 8` in `lean/README.md` m
 - `checker/`: `verify_tree.py` (tree-only certificates), `verify_tree_dump.py` (the same with the dual dump),
   `verify_cmp.py` (format 2), `verify.py` (format 1), and `second/`, a second checker for tree-only certificates
   and search logs, with different exact arithmetic and linear-programming code.
-- `docs/CERT_FORMAT.md` and `docs/TREE_FORMAT.md`: the certificate formats for C₁; `docs/RUNS.md`: notes on the settings
-  and incidents of the runs reported in the paper.
+- `docs/CERT_FORMAT.md` and `docs/TREE_FORMAT.md`: the certificate formats for C₁; `docs/RUNS.md`: the runs and audits
+  that Appendix A of the paper summarizes, with their costs and hashes, and notes on the settings and incidents of
+  these runs.
 - `tools/`: multistart search for the discrete values `V_n` (`vn_search.py`, `vn_global.py`), exact evaluation of mass
   vectors (`check_point.py`, `check_points.py`) and the same-tree check of two copies of a certificate
   (`idcheck_tree.py`).
@@ -579,6 +580,13 @@ The archive record of this repository has one version for each version of the pa
 [doi:10.5281/zenodo.23480604](https://doi.org/10.5281/zenodo.23480604). The certificates of superseded signed bounds
 stay in the versions that added them.
 
+- Version 13 (doi:10.5281/zenodo.23715661) rewrites the abstract and the introduction of the paper and the descriptions of
+  the two records, moves the details of the runs and audits (costs, hashes, sample sizes, Tables 5 to 7 of version 12)
+  from the paper to `docs/RUNS.md`, moves the certificate format and the checkers of Section 6 to a new Appendix B, collects the formal proofs in
+  Appendix A, and
+  corrects the last clause of Theorem 1.3, which read 4/3 > 4/3. The theorems, certificates, programs,
+  Lean proofs and data files are those of version 12. It is the tag v13 of this repository,
+  https://github.com/tejasvi/autocorrelation-lower-bounds/tree/v13; the release PDF on Zenodo prints the commit.
 - Version 12 (doi:10.5281/zenodo.23645397) adds the kernel-only Lean proof of the signed bound 4/3 in
   `signed/lean_kernel_4_3/`, with `k43_oleans.sha256.gz`, `k43_sources.sha256.gz` and
   `one_sided_tau1_4_kernel_hints.tar.xz`: the hashes of its compiled modules and of their sources, and the hint files

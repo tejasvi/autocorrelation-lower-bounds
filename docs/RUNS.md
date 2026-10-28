@@ -1,7 +1,206 @@
 # Notes on the runs reported in the paper
 
-These notes record settings and incidents of the runs that the paper reports. None of them can make a checker accept a
+The first section below keeps the details of the runs and audits that Appendix A of the paper summarizes. The other
+sections record settings and incidents of the runs that the paper reports; none of them can make a checker accept a
 leaf whose exact bound is below lam.
+
+## Runs and audits summarized in Appendix A of the paper
+
+Up to version 12, Appendix A of the paper gave the following details of the runs and audits in full. From version 13
+on, the paper summarizes them and refers to this file. The text below is that of version 12, with its macros written
+out; theorem, section, table and equation numbers refer to version 12 of the paper.
+
+### What each second checker shares with the first checker of the same certificates
+
+| Second checker | Shared with the first checker | Its own |
+|---|---|---|
+| `iv_verify.py` | no code with the first checker or with the search, although we knew the code of the first checker | all of its code |
+| `indep_three_level.py` | the reading of the file, the walk over the tree of leaves, the corner rule for the extremes of Re(conj(y_j) x) over a box and the outline of the winding count, with about fifty short lines in common; it re-implements the ball-based bound for r of the first checker | its enclosures of arcs and tiles, its bounds in t, its coverage test for the leaves and its acceptance test for the pieces of the winding count |
+| `indep_nested.py` | nothing imported; 36 lines of at least 25 characters in common, 23 of them verbatim and the others up to the names of variables (the description of the format lists what these lines do); the way it schedules the subtrees of a witness as separate jobs follows the design of `check_nested.py` | its checks of the inequalities: its enclosures of S, S', S'', K_t, the transform of nu and G_nu, its bounds for the extrema over arcs and in t, its bound for r_N, the rest of its winding count, its bounds for the tube conditions and for the rectangles, and its test of the intervals of type E |
+
+### Runs behind Table 1 (the certificate of Theorem 2.2)
+
+| Run | Cost |
+|---|---|
+| Search (wall time) | 215 min on up to 179 servers (52,123 worker processes), about 112,700 CPU-hours |
+| First checker (search logs) | on 178 servers, about 70 min (wall time) |
+| Second checker (search logs) | about 12,700 worker-hours |
+| Lean check (`native_decide`) | 124,634 modules; about 2,600 CPU-hours on one server for export, build and checks (the modules in 4.5 h) |
+| Lean check (kernel only) | 5,164,010 check modules, about 186,600 CPU-hours; assembly in about 2 h on one server |
+
+SHA-256 of `meta.json`: `5fa65703265cba2d10b36d5a4f5669c9e75a51d52de1f18007b62708dc93192f`
+
+- **First checker.** The first checker ran on the logs held by each of the 178 servers, writing one summary file per
+  server; a final run of the first checker combined the 178 summary files and checked the partition.
+- **Search logs.** After the first checker had accepted the logs of a server, these logs were made read-only, their
+  SHA-256 hashes were listed, and they were packed into one tar file per server. These 178 tar files, with the file
+  `meta.json` of the run, which fixes n, lam and the rows and columns, are the certificate. A later pass read every tar
+  file and found the listed hash for each of the 5,033,964 job files.
+- **Second checker.** It ran after the first checker, on the logs of every server, and each time it confirmed that the
+  job files it read have the SHA-256 hashes of that list. A separate script combined the per-server results, with the
+  identification of the job files and the partition check of item (c) in Section 4.
+- **Coverage.** For the run of the first checker and for its run on the certificate for V_36 >= 133/100, a separate
+  count confirmed that the per-job results cover every job exactly once.
+- **Lean input.** A variant of the first checker, with identical acceptance logic, also writes the dual vectors that it
+  accepts. It is in the repository and in the archive of the certificate for V_36 >= 133/100. The Lean checker read the
+  search logs with the dual vectors of the 2,446 leaves without data filled in by this variant; these leaves lie in
+  2,412 job files. The 2,412 filled job files are kept with the search logs; their SHA-256 hashes are archived as
+  `c1337_filled_jobs.sha256`, and the list of all files that the Lean checker read, with their SHA-256 hashes, as
+  `c1337_filled_certificate.sha256.gz`. Any filled certificate that the Lean checker accepts gives the theorem.
+- **Lean proof.** The formal theorem states (1.1) with C = 1337/1000 for measurable f: R -> [0, infinity] with lower
+  Lebesgue integrals. We also derive in Lean the stronger statement with the essential supremum, and a version for
+  measurable f: R -> R that is nonnegative and vanishes outside [-1/4, 1/4], stated with Mathlib's convolution and the
+  L-infinity norm on [-1/2, 1/2]. The Lean checker re-implements the constraints of Section 3 and proves them valid. An
+  exporter translates the search logs, completed as in the previous item, into Lean source; since the formal theorem
+  does not mention the certificate, the exporter need not be trusted. The final theorem of the proof through
+  `native_decide` depends on Lean's three standard axioms and on 124,632 further axioms. Each records the result of a
+  compiled evaluation: one for each generated module, which checks a group of jobs, and one for the root region. In an
+  audit, all 124,634 modules of the Lean proof of Theorem 1.1 were rebuilt with a separate toolchain and compiled
+  checker, from our sources, which the audit checked against the list of their SHA-256 hashes
+  (`c1337_sources.sha256.gz`). For a pre-registered random sample of 2,493 of the 124,631 modules that check groups of
+  jobs, the audit also regenerated the sources from the certificate; they were byte-identical to ours. All rebuilt
+  modules except the module of the statements were byte-identical to ours; that module's olean differed in bytes, but
+  its imports, constant names and types were identical and its constants passed kernel replay. The audit's compiled
+  checker also evaluated every step of the proof that `native_decide` accepts a second time.
+- **Kernel-only Lean proof.** The kernel-only proof of Theorem 1.1 checks the segments of the depth-first records of all
+  jobs in 5,164,010 generated modules, and 252 group modules and the final modules compose these checks. Six jobs were
+  cut into segments differently, by a patch of the exporter, which need not be trusted, and three jobs were checked by
+  a second version of the checker and composed in a separate module. Building the check modules took about 186,600
+  CPU-hours; the assembly took about two hours on one server. An audit found the three final statements of this proof
+  equal to the reviewed statements with lam = 1337/1000 and depending only on `propext`, `Classical.choice` and
+  `Quot.sound`.
+- **The certificate for V_39 >= 267/200.** Both checkers accepted its search logs, and the first checker also its
+  archived form (Section 5), in about 320,000 worker-hours and with smallest bound 1.3350000000004...; a separate
+  script confirmed that the two have the same tree. The Lean checker read the logs, completed as above; the list of
+  these files, with their SHA-256 hashes, is archived as `c39t_filled_certificate.sha256.gz`.
+- **The certificate for V_36 >= 133/100.** For this certificate we ran the variant of the first checker, which also
+  wrote, for the Lean checker, a certificate in which every leaf stores its dual vector. That certificate (about 2.1
+  terabytes) is not archived, but the list of its files with their SHA-256 hashes is
+  (`c36t_filled_certificate.sha256.gz`). The Lean check of that certificate through `native_decide` used 490,501
+  modules and about 2,200 CPU-hours. The kernel-only check used 2,274,566 generated modules: 78 check modules for the
+  620 jobs at the top of the tree; 2,274,486 shard modules for the 6,372 subtrees below them, which were split into 202
+  shards; one module of shared parameters; and a final assembly module that imports all the others and proves the
+  theorems. The shard modules were built in about 4.7 hours on 202 servers, and the final module took 50 minutes and
+  2.6 TiB of memory on one server. Printing the axioms of the theorems would need one process that loads all these
+  modules. Instead, a scan of every compiled module found no declared axiom and no reference to `sorryAx` or to native
+  evaluation, and the constants used from outside these modules depend only on Lean's three standard axioms. In an
+  audit, this scan was repeated with separate code, and the module of shared parameters, the 78 check modules and all
+  2,274,486 shard modules were rebuilt from the same inputs, with results byte-identical to ours. The final assembly
+  module, which imports all the others, was not rebuilt but was replayed in Lean's kernel. This rebuild used about
+  54,000 CPU-hours of Lean user time, on up to 20 servers that each ran 178 Lean processes, in about one day.
+- **The certificate for V_28 >= 131/100.** We ran checker (c) of Table 3 on the jobs in parallel on 32 machines and
+  combined the per-job results, a step that includes the partition check.
+- **The nested certificate of Table 4.** Its archive `one_sided_tau1_4_parts.tar` has the SHA-256 hash
+  `311796500af5dcdf61c36b2d9aa9e9f752b43afccaa49ff830c39be2ef919d87`. The check by `check_nested.py` took 3 h 27 min of
+  wall-clock time on two servers with 384 threads and four with 96 threads, and the check by `indep_nested.py` took
+  8 h 45 min on three servers with 384 threads.
+- **The certificate for tau = 6/25.** Both checkers of multi-level certificates accepted it in 38 min and 13 min with
+  382 workers each on a server with 384 threads. Its file `one_sided_tau6_25.json.gz` has the SHA-256 hash
+  `2a76bd9b523ac8991bf99c5a8a00e9eefca84b867dc2a1b558cfa2d3eaa686d8`.
+
+### Audits of the Lean proofs of the signed bounds
+
+For the proof of C_3 >= C_3' >= 25/19 through `native_decide`, every module was rebuilt from scratch, with the data
+regenerated from the certificate, and re-checked in Lean's kernel. With the auxiliary axioms taken as given, its
+exported proof is accepted by Lean's kernel (`leanchecker`) and by two other kernel implementations, nanoda and
+lean4lean, and a corrupted export is rejected by all three. For the kernel-only proof of the same bound only a sample
+was re-checked: a seeded random 10% of the piece modules was checked again by Lean's kernel, while the other piece
+modules, and the check that the three final theorems depend only on the standard axioms, rest on our own build. For
+the bound 30/23, the exported proof through `native_decide` is accepted by `leanchecker`, nanoda and lean4lean, and the
+15,663 modules of the kernel-only proof were rebuilt from regenerated sources on other machines. For the proof of
+C_3 >= C_3' >= 4/3 through `native_decide`, in an independent rebuild from the certificate, every compiled file was
+reproduced byte for byte and every module was re-checked in Lean's kernel; other kernel implementations are discussed
+under "Partial checks" below. For the kernel-only proof of C_3 >= C_3' >= 4/3, an audit confirmed that the three
+theorems of this proof state the same as those of the proof by `native_decide` and use no axioms beyond the standard
+ones. In this audit the library and all assembly modules were rebuilt with identical bytes and replayed in Lean's
+kernel, and for every data module the audit checked the hash, the absence of declared axioms and of native code, and
+that the module's tree of nodes equals that of the proof by `native_decide`. The proofs in the data modules were
+checked again only in samples. Twelve parts were rebuilt with identical bytes. Lean's kernel replayed 184 sampled
+files; the 102 files that were compiled again after reaching a time limit, together with the 102 modules built on
+them; and 30 of the 426 files whose first builds left no logs, chosen at random. The other data modules rest on the
+kernel checks of our build.
+
+Lean proofs of the signed bounds: generated modules and build times.
+
+| Bound | Checks by | Modules | Build |
+|---|---|---|---|
+| 4/3 | `native_decide` | 208,803 | about 9,150 CPU-hours (2.25 h on 19 servers with 384 threads each, and 4 h on one more for the assembly) |
+| 4/3 | `decide +kernel` | 212,820 | about 313,000 CPU-hours (47 h on up to 89 servers with 176 threads each, and 18 server-hours for the assembly, most of them during the build) |
+| 25/19 | `native_decide` | 2,375 | about 124 CPU-hours (27 min on one server) |
+| 25/19 | `decide +kernel` | 41,353 | about 13,900 CPU-hours (3.2 h on 12 servers with 384 threads each) |
+| 30/23 | `native_decide` | 2,627 | about 133 CPU-hours (77 min on two servers with 140 threads in total) |
+| 30/23 | `decide +kernel` | 15,663 | about 11,300 CPU-hours (6.4 h on 24 servers with 96 threads each) |
+
+### Partial checks
+
+For the kernel-only proof of Theorem 1.1, an independent kernel replay covered the whole assembly: the module of
+parameters, the 252 group modules and the final modules. The 5,164,004 job modules of the first version of the checker
+were kernel-checked by our build, and all of them match the SHA-256 lists of the build. A 2% sample of the job units
+(103,602 modules), the five most CPU-heavy modules, the re-segmented ones and those of the second version were rebuilt
+independently and are byte-identical; the other job modules rest on the kernel checks of our build. A separate,
+reduced audit used a modified copy of the second checker; this copy confirmed the SHA-256 hashes of all job files,
+replayed the records, regions and delegations of every job exactly, and confirmed that the jobs partition the region
+(2.2). Of the leaves, it certified 6,810,514 listed ones exactly, with the same smallest bound, and re-solved
+1,882,155 of them with its own linear programs, given the square constraints that the stored vectors name; all of
+these reached lam. The re-solved leaves are a seeded random 2% of the leaves with stored dual vectors together with
+the 0.1% with the smallest stored margins. The audit does not certify every leaf; the certification of every leaf
+rests on the two checkers of Section 4.2. For the Lean proof of C_3 >= C_3' >= 4/3, the exported forms of a seeded
+sample of 20 data modules and of the assembly module of one arc were accepted by `leanchecker`, nanoda and lean4lean;
+no other kernel implementation has checked the complete export. For its kernel-only proof, five sampled data modules
+were exported; `leanchecker` and nanoda accepted all five, and lean4lean accepted three of them. The assembly module
+of one arc was exported with every declaration it depends on; all three kernels accepted it and rejected a corrupted
+export. None of the three has checked the complete export. For the kernel-only proof of the bound 30/23, besides
+Lean's kernel, nanoda and lean4lean accepted the soundness proof, the lemmas that equate the two versions of the
+checker, the global checks and one interval of type E, and nanoda also accepted an interval of type H, whose check is
+assembled from piece theorems. The complete export, about 5.7 million constants, was not checked by a second kernel.
+
+### Details that version 13 removed from the paper
+
+- Table 1 of version 12 also had the rows "Jobs (subtrees): 5,033,964", "LP rows (no squares); columns: 17,085; 3,158" (Section 4.1 of the paper
+  states these numbers) and "Search logs (the certificate): 5,033,964 job files, 1,880,311,858,658 bytes, in 178 tar
+  files".
+- Table 4 of version 12 also had the row "Archive of the 2,048 parts: `one_sided_tau1_4_parts.tar`, 25,152,471,040
+  bytes".
+- Appendix A of version 12 gave the solver versions: both checkers of Theorem 2.2 use HiGHS through highspy 1.15.1, and
+  the search program in `search/sdp` calls Clarabel 0.11.1. It also said that `INDEP_SAMPLE.txt` gives the seed string,
+  fixed in advance, and the rule by which a pseudorandom generator drew the parts.
+- Section 6 of version 12 described the search programs: "The search programs choose the numbers u, v and y_j from
+  linear programs on grids of values of t, solved in floating point with HiGHS. They subdivide intervals, squares and
+  tile arcs until a ball-arithmetic check of the same kind as in the first checker succeeds, and they take nu_rep from a
+  linear program as well." and "The nested certificate was produced by a further search program, which builds the
+  trees: where a witness fails on a tile arc, it tries a child with the new tube condition, with at most two tube
+  conditions at a node, and where a child fails, it may split the arc of a tube condition in two, at most 8 times in a
+  row. The search ran in pieces, each with a budget of 20,000 nodes, and pieces that exceeded it were divided into 16
+  smaller pieces, in up to two rounds. The intervals of the lower half are the mirror images of those of the upper half,
+  and an assembly program joins the pieces into the certificate and writes its parts."
+- Section 4.1 of version 12: the search solves Shor's semidefinite relaxation at a node that the linear program does not close
+  when the value of the linear program is at least lam - 0.008.
+- Section 4.2 of version 12: at a leaf without data, the first checker adds square constraints from the 20 pairs of blocks whose
+  matrices have the most negative smallest eigenvalues below -10^-6, with the eigenvector scaled to maximum norm 1, multiplied by
+  2^20 and rounded to integers, for at most 20 rounds; window, McCormick and square constraints found at earlier leaves of the same
+  job stay in the linear program until they have carried no dual weight for more than 40 leaves, and the solver stops as soon as the
+  objective exceeds lam + 10^-6; the checker rounds the duals for the rows to multiples of 2^-64 and those for the square
+  constraints to multiples of 2^-128.
+- Appendix A of version 12: the search program of Theorem 2.2 is in `search/sdp` (the search program of the certificate for
+  V_39 >= 267/200 with the semidefinite step added); `signed/FORMAT.md` specifies the format of multi-level certificates;
+  `signed/nested` also holds `coverage_subsets2.py` and the list `INDEP_SAMPLE.txt` of the 103 parts of an earlier run of
+  `indep_nested.py` on a random sample.
+- Table 4 of version 12 is Table 4 of version 13 without its archive row and without the row "Tile arcs: in total; with a child:
+  506,448,728; 7,993,894". The certificate format and the checkers of Section 6 of version 12 are Appendix B of version 13, and
+  the paragraphs "Formal proofs" of its Section 6 are in Appendix A of version 13. Version 13 names the checkers of
+  the nested certificate by their roles: the first is `check_nested.py`, the second `indep_nested.py`, and the program that checks
+  the coverage by the parts is `coverage_subsets2.py`; the table at the start of this file says what each second checker shares
+  with the first and how it was written.
+- Table 3 of version 12 (the further certificates) is a sentence in Section 5 of version 13. Its rows: V_39 >= 267/200,
+  527,163,006 leaves, square constraints, both checkers of Theorem 2.2; V_36 >= 133/100, 177,077,986 leaves, square
+  constraints, both checkers of Theorem 2.2; V_30 >= 33/25, 24,935,952 leaves, square constraints, the checker for
+  certificates that store the dual vector of every leaf; V_28 >= 131/100, 15,250,196 leaves, V_24 >= 13/10, 2,801,076
+  leaves, and V_20 >= 32/25, 113,761 leaves, no square constraints, the third checker. Its column "Lean kernel alone"
+  (yes for V_36, V_28 and V_20) is a sentence in Appendix A of version 13.
+- Counts that version 13 of the paper no longer prints: the kernel-only proofs of 25/19, 30/23 and 4/3 have 41,353,
+  15,663 and 212,820 generated modules (table above); the kernel-only proof of Theorem 1.1 checks the jobs in 5,164,010
+  generated modules (items above); the certificate for V_39 >= 267/200 has 13,678,676 jobs and that for V_36 >= 133/100
+  has 2,419,679.
 
 ## The certificate of V_39 >= 1337/1000
 

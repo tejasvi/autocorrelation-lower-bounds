@@ -7,8 +7,8 @@ authors:
     orcid: "https://orcid.org/0000-0003-4668-3639"
 license: Apache-2.0
 repository-code: "https://github.com/tejasvi/autocorrelation-lower-bounds"
-version: v12
-doi: 10.5281/zenodo.23645397
+version: v13
+doi: 10.5281/zenodo.23715661
 preferred-citation:
   type: article
   title: "Certified lower bounds for the first and the signed third autocorrelation constants"
@@ -16,5 +16,5 @@ preferred-citation:
     - family-names: Tomar
       given-names: Tejasvi Singh
       orcid: "https://orcid.org/0000-0003-4668-3639"
-  doi: 10.5281/zenodo.23645396
+  doi: 10.5281/zenodo.23715655
   year: 2026
